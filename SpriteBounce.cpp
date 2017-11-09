@@ -31,7 +31,7 @@ static double x = 0, y = 0, vx = 250, vy = 250;
 static SDL_Texture *sprite;
 static SDL_Renderer *renderer;
 
-void update(double delta) {
+static void update(double delta) {
     x += vx * delta;
     if (x < 0) {
         vx = -vx;
@@ -51,7 +51,7 @@ void update(double delta) {
     }
 }
 
-void draw() {
+static void draw() {
     SDL_Rect position = {
         .x = static_cast<int>(x * scale),
         .y = static_cast<int>(y * scale),
@@ -61,7 +61,7 @@ void draw() {
     SDL_RenderCopy(renderer, sprite, nullptr, &position);
 }
 
-void loop() {
+static void loop() {
     static unsigned int last = SDL_GetTicks();
 
     SDL_Event event;
