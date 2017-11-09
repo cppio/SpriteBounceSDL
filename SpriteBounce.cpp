@@ -80,7 +80,7 @@ static void loop() {
     SDL_RenderPresent(renderer);
 }
 
-int main() {
+int main(int argc, char **argv) {
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
 
     SDL_Window   *window;
