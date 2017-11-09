@@ -1,10 +1,14 @@
+#ifdef _WIN32
+#include <SDL.h>
+#include <SDL_image.h>
+#else // _WIN32
 #include <SDL2/SDL.h>
-
 #ifdef __APPLE__
 #include <SDL2_image/SDL_image.h>
 #else // __APPLE__
 #include <SDL2/SDL_image.h>
 #endif // __APPLE_
+#endif // _WIN32
 
 static SDL_Texture *loadTexture(const char *file, SDL_Renderer *renderer) {
     SDL_Surface *surface = IMG_Load(file);
@@ -52,12 +56,11 @@ static void update(double delta) {
 }
 
 static void draw() {
-    SDL_Rect position = {
-        .x = static_cast<int>(x * scale),
-        .y = static_cast<int>(y * scale),
-        .w = sprite_w * scale,
-        .h = sprite_h * scale
-    };
+    SDL_Rect position;
+    position.x = static_cast<int>(x * scale);
+    position.y = static_cast<int>(y * scale);
+    position.w = sprite_w * scale;
+    position.h = sprite_h * scale;
     SDL_RenderCopy(renderer, sprite, nullptr, &position);
 }
 
@@ -81,6 +84,8 @@ static void loop() {
 }
 
 int main(int argc, char **argv) {
+    (void) argc; (void) argv;
+
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
 
     SDL_Window   *window;
