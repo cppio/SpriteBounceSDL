@@ -7,4 +7,4 @@ FLAGS += -lSDL2 -lSDL2_image
 endif
 
 SpriteBounce: SpriteBounce.cpp
-	$(CXX) SpriteBounce.cpp -o SpriteBounce $(FLAGS)
+	$(CXX) SpriteBounce.cpp -o SpriteBounce -std=c++11 $(FLAGS)
