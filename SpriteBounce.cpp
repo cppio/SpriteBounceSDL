@@ -52,7 +52,7 @@ void update(double delta) {
 }
 
 void draw() {
-    SDL_Rect position {
+    SDL_Rect position = {
         .x = static_cast<int>(x * scale),
         .y = static_cast<int>(y * scale),
         .w = sprite_w * scale,
