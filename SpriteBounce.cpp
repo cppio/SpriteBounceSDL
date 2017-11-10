@@ -10,7 +10,7 @@
 #endif // __APPLE_
 #endif // _WIN32
 
-static SDL_Texture *loadTexture(const char *file, SDL_Renderer *renderer) {
+SDL_Texture *loadTexture(const char *file, SDL_Renderer *renderer) {
     SDL_Surface *surface = IMG_Load(file);
     if (!surface) {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "IMG_Load: %s", IMG_GetError());
@@ -26,14 +26,20 @@ static SDL_Texture *loadTexture(const char *file, SDL_Renderer *renderer) {
     return texture;
 }
 
-static const int sprite_w = 32, sprite_h = 32;
-static const int window_w = 1280, window_h = 720;
+const int sprite_w = 32,
+          sprite_h = 32;
+const int window_w = 1280,
+          window_h = 720;
 
-static double x = 0, y = 0, vx = 250, vy = 250;
-static SDL_Texture *sprite;
-static SDL_Renderer *renderer;
+double x = 0,
+       y = 0;
+double vx = 250,
+       vy = 250;
 
-static void update(double delta) {
+SDL_Texture  *sprite;
+SDL_Renderer *renderer;
+
+void update(double delta) {
     x += vx * delta;
     if (x < 0) {
         vx = -vx;
@@ -53,16 +59,16 @@ static void update(double delta) {
     }
 }
 
-static void draw() {
+void draw() {
     SDL_Rect position;
-    position.x = static_cast<int>(x);
-    position.y = static_cast<int>(y);
+    position.x = static_cast<int>(x + 0.5);
+    position.y = static_cast<int>(y + 0.5);
     position.w = sprite_w;
     position.h = sprite_h;
     SDL_RenderCopy(renderer, sprite, nullptr, &position);
 }
 
-static void loop() {
+void loop() {
     static unsigned int last = SDL_GetTicks();
 
     SDL_Event event;
@@ -86,7 +92,7 @@ int main(int argc, char **argv) {
 
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
 
-    SDL_Window   *window;
+    SDL_Window *window;
     if (SDL_CreateWindowAndRenderer(window_w, window_h, SDL_WINDOW_ALLOW_HIGHDPI, &window, &renderer)) {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_CreateWindowAndRenderer: %s", SDL_GetError());
         return 1;
