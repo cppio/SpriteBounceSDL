@@ -29,8 +29,6 @@ static SDL_Texture *loadTexture(const char *file, SDL_Renderer *renderer) {
 static const int sprite_w = 32, sprite_h = 32;
 static const int window_w = 1280, window_h = 720;
 
-static int scale = 1;
-
 static double x = 0, y = 0, vx = 250, vy = 250;
 static SDL_Texture *sprite;
 static SDL_Renderer *renderer;
@@ -57,10 +55,10 @@ static void update(double delta) {
 
 static void draw() {
     SDL_Rect position;
-    position.x = static_cast<int>(x * scale);
-    position.y = static_cast<int>(y * scale);
-    position.w = sprite_w * scale;
-    position.h = sprite_h * scale;
+    position.x = static_cast<int>(x);
+    position.y = static_cast<int>(y);
+    position.w = sprite_w;
+    position.h = sprite_h;
     SDL_RenderCopy(renderer, sprite, nullptr, &position);
 }
 
@@ -94,18 +92,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    int new_w, new_h;
-    if (SDL_GetRendererOutputSize(renderer, &new_w, &new_h)) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_GetRendererOutputSize: %s", SDL_GetError());
-        return 1;
-    }
-    if (new_w / window_w != new_h / window_h)
-        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "horizontal scale (%d) != vertical scale (%d)", new_w / window_w, new_h / window_h);
-    scale = new_w / window_w;
-    if (!scale) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "scale = 0");
-        scale = 1;
-    }
+    SDL_RenderSetLogicalSize(renderer, window_w, window_h);
 
     sprite = loadTexture("Smiley.png", renderer);
     if (!sprite)
